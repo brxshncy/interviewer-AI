@@ -2,31 +2,52 @@ import React from "react";
 
 import {
   FormControl,
-  FormDescription,
   FormField as ShadcnFormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
-const FormField = () => {
+interface FormFieldProps<T extends FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
+  label: string;
+  placeholder?: string;
+  type?: "text" | "email" | "password" | "file";
+}
+
+const FormField = ({
+  control,
+  name,
+  label,
+  placeholder,
+  type = "text",
+}: FormFieldProps<T>) => {
   return (
-    <ShadcnFormField
-      control={form.control}
-      name="username"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Username</FormLabel>
-          <FormControl>
-            <Input placeholder="shadcn" {...field} />
-          </FormControl>
-          <FormDescription>This is your public display name.</FormDescription>
-          <FormMessage />
-        </FormItem>
-      )}
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => {
+        return (
+          <FormItem>
+            <FormLabel className="label">{label}</FormLabel>
+            <FormControl>
+              <Input
+                className="input"
+                // type={type}
+                placeholder={placeholder}
+                {...field}
+              />
+            </FormControl>
+
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 };
 
-export default FormFrield;
+export default FormField;
